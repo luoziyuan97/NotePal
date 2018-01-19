@@ -17,6 +17,9 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by John on 2018/1/13.
  */
@@ -42,10 +45,7 @@ public class DataAdapter extends ArrayAdapter
         {
             view = LayoutInflater.from(getContext())
                     .inflate(resourceId,parent,false);
-            viewHolder = new ViewHolder();
-            viewHolder.theme = (TextView)view.findViewById(R.id.themeText_listview);
-            viewHolder.content = (TextView)view.findViewById(R.id.contentText_listview);
-            viewHolder.date = (TextView)view.findViewById(R.id.dateText_listview);
+            viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
         }
         else
@@ -61,8 +61,16 @@ public class DataAdapter extends ArrayAdapter
 
     class ViewHolder	//内部类ViewHolder，用于优化加载性能
     {
+        @BindView(R.id.themeText_listview)
         TextView theme;
+        @BindView(R.id.contentText_listview)
         TextView content;
+        @BindView(R.id.dateText_listview)
         TextView date;
+
+        public ViewHolder(View view)        //使用ButterKnife
+        {
+            ButterKnife.bind(this,view);
+        }
     }
 }

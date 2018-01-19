@@ -21,6 +21,7 @@ public class DBHelper extends SQLiteOpenHelper
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL(DBSchema.NoteTable.DROP_NOTETABLE);
+        db.execSQL(DBSchema.NoteTable.CREATE_NOTETABLE);
     }
 }

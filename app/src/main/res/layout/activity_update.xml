@@ -6,21 +6,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/addButton_addActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="368dp"
+        android:layout_height="43dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="添加"
-        android:textSize="18sp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/okButton_updateActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="确定"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/cancelButton_updateActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="取消"
+            android:textSize="18sp" />
+    </LinearLayout>
 
     <EditText
-        android:id="@+id/themeText_addActivity"
+        android:id="@+id/themeText_updateActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -36,20 +52,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/contentText_addActivity"
+        android:id="@+id/contentText_updateActivity"
         android:layout_width="0dp"
-        android:layout_height="383dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:gravity="top"
         android:hint="点这儿输入内容"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/addButton_addActivity"
+        android:textAlignment="viewStart"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/themeText_addActivity" />
+        app:layout_constraintTop_toBottomOf="@+id/themeText_updateActivity" />
 </android.support.constraint.ConstraintLayout>

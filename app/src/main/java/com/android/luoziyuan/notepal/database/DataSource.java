@@ -3,12 +3,9 @@ package com.android.luoziyuan.notepal.database;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.android.luoziyuan.notepal.model.Note;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,10 +22,27 @@ public class DataSource
         sqLiteDB = dbHelper.getWritableDatabase();
     }
 
-    public List<Note> get()
+    public void get(List<Note> data)     //从数据库获取数据
     {
-        List<Note> notes = new ArrayList<Note>();
         Cursor cursor = sqLiteDB.rawQuery("SELECT * FROM notes", null);
+        if (cursor.moveToFirst()) {
+            do {
+                Note newNote = new Note(
+                        cursor.getLong(cursor.getColumnIndex(DBSchema.NoteTable.COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndex(DBSchema.NoteTable.COLUMN_THEME)),
+                        cursor.getString(cursor.getColumnIndex(DBSchema.NoteTable.COLUMN_CONTENT)),
+                        cursor.getString(cursor.getColumnIndex(DBSchema.NoteTable.COLUMN_DATE)));
+                data.add(newNote);
+            } while (cursor.moveToNext());
+        }
+    }
+
+    public void get(List<Note> data,String s)     //带参数的获取数据方法，搜索功能使用
+    {
+        Cursor cursor = sqLiteDB.rawQuery("SELECT * FROM notes WHERE " +
+                DBSchema.NoteTable.COLUMN_CONTENT + " like " + "'%" + s + "%'" + " OR " +
+                DBSchema.NoteTable.COLUMN_THEME + " like " + "'%" + s + "%'",
+                null);
         if (cursor.moveToFirst())
         {
             do{
@@ -37,10 +51,9 @@ public class DataSource
                         cursor.getString(cursor.getColumnIndex(DBSchema.NoteTable.COLUMN_THEME)),
                         cursor.getString(cursor.getColumnIndex(DBSchema.NoteTable.COLUMN_CONTENT)),
                         cursor.getString(cursor.getColumnIndex(DBSchema.NoteTable.COLUMN_DATE)));
-                notes.add(newNote);
+                data.add(newNote);
             }while(cursor.moveToNext());
         }
-        return notes;
     }
 
     public void insertNote(List<Note> data,String theme, String content, String date)

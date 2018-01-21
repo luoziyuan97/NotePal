@@ -8,13 +8,23 @@ import android.support.annotation.NonNull;
 
 public class Note implements Comparable<Note>
 {
+    public static final int TYPE_NOTE = 0;
+    public static final int TYPE_EXAM = 1;
+    public static final int TYPE_HOMEWORK = 2;
+    public static final int TYPE_AFFAIR = 3;
+
     private long id;
+    private int type;
     private String theme;
     private String content;
     private String date;
 
     public long getId() {
         return id;
+    }
+
+    public int getType(){
+        return type;
     }
 
     public String getTheme() {
@@ -45,6 +55,17 @@ public class Note implements Comparable<Note>
     {
 
         this.id = id;
+        this.type = TYPE_NOTE;
+        this.theme = theme;
+        this.content = content;
+        this.date = createDate;
+    }
+
+    public Note(long id, int type, String theme, String content, String createDate)
+    {
+
+        this.id = id;
+        this.type = type;
         this.theme = theme;
         this.content = content;
         this.date = createDate;

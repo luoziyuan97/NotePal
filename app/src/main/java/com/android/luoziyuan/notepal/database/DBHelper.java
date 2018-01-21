@@ -15,13 +15,24 @@ public class DBHelper extends SQLiteOpenHelper
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase db)
+    {
         db.execSQL(DBSchema.NoteTable.CREATE_NOTETABLE);
+        db.execSQL(DBSchema.ExamTable.CREATE_EXAMTABLE);
+        db.execSQL(DBSchema.HomeworkTable.CREATE_HOMEWORKTABLE);
+        db.execSQL(DBSchema.AffairTable.CREATE_AFFAIRTABLE);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+    {
         db.execSQL(DBSchema.NoteTable.DROP_NOTETABLE);
         db.execSQL(DBSchema.NoteTable.CREATE_NOTETABLE);
+        db.execSQL(DBSchema.ExamTable.DROP_EXAMTABLE);
+        db.execSQL(DBSchema.ExamTable.CREATE_EXAMTABLE);
+        db.execSQL(DBSchema.HomeworkTable.DROP_HOMEWORKTABLE);
+        db.execSQL(DBSchema.HomeworkTable.CREATE_HOMEWORKTABLE);
+        db.execSQL(DBSchema.AffairTable.DROP_AFFAIRTABLE);
+        db.execSQL(DBSchema.AffairTable.CREATE_AFFAIRTABLE);
     }
 }

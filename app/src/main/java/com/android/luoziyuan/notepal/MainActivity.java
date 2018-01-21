@@ -52,8 +52,21 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.testButton_mainActivity)
     public void addNewNote(View view)
     {
-        startActivityForResult(new Intent(this,AddActivity.class),
-                REQUESTCODE_ADDACTIVITY);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("请选择记录类型");
+        builder.setSingleChoiceItems(new String[]{"笔记", "考试", "作业", "事务(会议、活动等)"},
+                -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(MainActivity.this,
+                                AddActivity.class);
+                        intent.putExtra("type",which);
+                        startActivityForResult(intent,REQUESTCODE_ADDACTIVITY);
+                        dialog.dismiss();
+                    }
+                });
+        builder.setNegativeButton("取消",null);
+        builder.show();
     }
 
     @OnTextChanged(R.id.searchText_mainActivity)
@@ -65,16 +78,12 @@ public class MainActivity extends AppCompatActivity {
         else
             dataSource.get(data, s.toString());
         Collections.sort(data);
-//        Toast.makeText(this,"length of data:" + data.size(),
-//                Toast.LENGTH_SHORT).show();
         dataAdapter.notifyDataSetChanged();
     }
 
     @OnItemClick(R.id.listview)         //listview项的点击事件
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
     {
-//        Toast.makeText(this,"点击第" + position + "项,id为:" + id,
-//                Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, UpdateActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("position",position);
@@ -87,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
     @OnItemLongClick(R.id.listview)     //listview项的长按事件
     public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id)
     {
-//        Toast.makeText(this,"长按第" + position + "项,id为:" + id,
-//                Toast.LENGTH_SHORT).show();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("提示");
         builder.setMessage("删除该记录？");
@@ -96,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                dataSource.deleteNote(data,position);
+                dataSource.delete(data,position);
                 dataAdapter.notifyDataSetChanged();
             }
         });
@@ -120,11 +127,11 @@ public class MainActivity extends AppCompatActivity {
         dataSource = new DataSource(this);
         dataSource.get(data);
         Collections.sort(data);
-        dataAdapter = new DataAdapter(this,R.layout.listview,data);
+        dataAdapter = new DataAdapter(this,data);
         listView.setAdapter(dataAdapter);
     }
 
-    @Override
+    @Override           //添加和更改操作
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (resultCode == RESULT_OK)
         {
@@ -132,11 +139,26 @@ public class MainActivity extends AppCompatActivity {
             {
                 case REQUESTCODE_ADDACTIVITY:       //响应添加功能
                 {
-                    String theme = intent.getStringExtra("theme");
-                    String content = intent.getStringExtra("content");
-                    dataSource.insertNote(data,theme,content,
-                            dateFormat.format(System.currentTimeMillis()));
-                    dataAdapter.notifyDataSetChanged();         //更新listview的显示
+                    int type = intent.getIntExtra("type",-1);
+                    switch (type)
+                    {
+                        case Note.TYPE_NOTE:
+                            String theme = intent.getStringExtra("theme");
+                            String content = intent.getStringExtra("content");
+                            dataSource.insertNote(data,theme,content,
+                                    dateFormat.format(System.currentTimeMillis()));
+                            dataAdapter.notifyDataSetChanged();         //更新listview的显示
+                            break;
+                        case Note.TYPE_EXAM:
+                            String subject = intent.getStringExtra("subject");
+                            String description = intent.getStringExtra("description");
+                            String date = intent.getStringExtra("date");
+                            String time = intent.getStringExtra("time");
+                            String place = intent.getStringExtra("place");
+                            dataSource.insertExam(data,subject,description,date,time,place);
+                            dataAdapter.notifyDataSetChanged();         //更新listview的显示
+                            break;
+                    }
                     Toast.makeText(this,"添加成功",Toast.LENGTH_SHORT).show();
                     break;
                 }
@@ -144,10 +166,11 @@ public class MainActivity extends AppCompatActivity {
                 {
                     if (intent.getBooleanExtra("isChanged",false))
                     {
+
                         String theme = intent.getStringExtra("theme");
                         String content = intent.getStringExtra("content");
                         int position = intent.getIntExtra("position",-1);
-                        dataSource.deleteNote(data,position);
+                        dataSource.delete(data,position);
                         dataSource.insertNote(data,theme,content,
                                 dateFormat.format(System.currentTimeMillis()));
                         dataAdapter.notifyDataSetChanged();

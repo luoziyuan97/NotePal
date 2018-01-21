@@ -1,6 +1,7 @@
 package com.android.luoziyuan.notepal.controller;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -49,6 +50,15 @@ public class UpdateActivity extends Activity
     {
         String newTheme = themeText.getEditableText().toString();
         String newContent = contenText.getEditableText().toString();
+        if (newTheme.length() == 0)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("那啥");
+            builder.setMessage("好歹写个主题吧_(:з」∠)_");
+            builder.setPositiveButton("是是是",null);
+            builder.show();
+            return;
+        }
         Intent intent = new Intent();
         if (newTheme.equals(theme) && newContent.equals(content))
             intent.putExtra("isChanged",false);

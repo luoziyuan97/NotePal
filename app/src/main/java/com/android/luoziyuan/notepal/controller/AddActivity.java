@@ -13,13 +13,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.android.luoziyuan.notepal.R;
 import com.android.luoziyuan.notepal.model.Note;
 
-import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import butterknife.BindView;
@@ -36,19 +33,19 @@ public class AddActivity extends Activity
     private int type;           //记录的类型
 
     @Nullable
-    @BindView(R.id.addButton_addActivity)
+    @BindView(R.id.addButton_addNote)
     Button addButton;
 
     @Nullable
-    @BindView(R.id.themeText_addActivity)
+    @BindView(R.id.themeText_addNote)
     EditText themeText;
 
     @Nullable
-    @BindView(R.id.contentText_addActivity)
+    @BindView(R.id.contentText_addNote)
     EditText contentText;
 
     @Optional
-    @OnClick(R.id.addButton_addActivity)
+    @OnClick(R.id.addButton_addNote)
     public void addNote(View view)              //添加按键的响应事件
     {
         String theme = themeText.getText().toString();
@@ -70,32 +67,35 @@ public class AddActivity extends Activity
         finish();
     }
 
+//*************************************************************************************
+//    Exam和Affair所用的布局
+
     @Nullable
-    @BindView(R.id.themeText_addexActivity)
+    @BindView(R.id.themeText_addExam)
     EditText themeTextEx;
 
     @Nullable
-    @BindView(R.id.dateText_addexActivity)
+    @BindView(R.id.dateText_addExam)
     TextView dateText;
 
     @Nullable
-    @BindView(R.id.timeText_addexActivity)
+    @BindView(R.id.timeText_addExam)
     TextView timeText;
 
     @Nullable
-    @BindView(R.id.placeText_addexActivity)
+    @BindView(R.id.placeText_addExam)
     EditText placeText;
 
     @Nullable
-    @BindView(R.id.contentText_addexActivity)
+    @BindView(R.id.contentText_addExamty)
     EditText contentTextEx;
 
     @Nullable
-    @BindView(R.id.addButton_addexActivity)
+    @BindView(R.id.addButton_addExam)
     Button addButtonEx;
 
     @Optional
-    @OnClick(R.id.dateText_addexActivity)
+    @OnClick(R.id.dateText_addExam)
     public void setDate()                   //点击dateText设置日期
     {
         Calendar calendar = Calendar.getInstance();
@@ -122,7 +122,7 @@ public class AddActivity extends Activity
     }
 
     @Optional
-    @OnClick(R.id.timeText_addexActivity)
+    @OnClick(R.id.timeText_addExam)
     public void setTime()               //点击timeText设置时间
     {
         Calendar calendar = Calendar.getInstance();
@@ -143,7 +143,7 @@ public class AddActivity extends Activity
     }
 
     @Optional
-    @OnClick(R.id.addButton_addexActivity)
+    @OnClick(R.id.addButton_addExam)
     public void addNoteEx(View view)
     {
         String theme = themeTextEx.getText().toString();
@@ -182,15 +182,17 @@ public class AddActivity extends Activity
         finish();
     }
 
+//*****************************************************************************************
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         type = getIntent().getIntExtra("type",-1);
-        if (type == Note.TYPE_NOTE || type == Note.TYPE_HOMEWORK)
-            setContentView(R.layout.activity_add);
+        if (type == Note.TYPE_NOTE || type == Note.TYPE_HOMEWORK)   //根据记录类型加载布局
+            setContentView(R.layout.add_note);
         else
-            setContentView(R.layout.activity_addex);
+            setContentView(R.layout.add_exam);
 
         ButterKnife.bind(this);
 

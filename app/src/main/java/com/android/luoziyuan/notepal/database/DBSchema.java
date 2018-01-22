@@ -7,7 +7,7 @@ package com.android.luoziyuan.notepal.database;
 public class DBSchema
 {
     public static final String DB_NAME = "mynotes.db";   //数据库名
-    public static final int DB_VERSION = 3;             //数据库版本号
+    public static final int DB_VERSION = 4;             //数据库版本号
 
     public static class NoteTable           //对应数据库中的notes表
     {
@@ -57,6 +57,7 @@ public class DBSchema
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_SUBJECT = "subject";
         public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_CREATEDATE = "createDate";
         public static final String COLUMN_DEADLINE = "deadline";
 
         public static final String CREATE_HOMEWORKTABLE = "CREATE TABLE IF NOT EXISTS "
@@ -64,6 +65,7 @@ public class DBSchema
                 + HomeworkTable.COLUMN_ID + " LONG PRIMARY KEY,"
                 + HomeworkTable.COLUMN_SUBJECT + " VARCHAR(50),"
                 + HomeworkTable.COLUMN_DESCRIPTION + " TEXT,"
+                + HomeworkTable.COLUMN_CREATEDATE + " CHAR(10),"
                 + HomeworkTable.COLUMN_DEADLINE + " CHAR(10));";
 
         public static final String DROP_HOMEWORKTABLE = "DROP TABLE IF EXISTS "

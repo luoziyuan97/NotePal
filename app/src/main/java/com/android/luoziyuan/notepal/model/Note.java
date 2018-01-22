@@ -39,18 +39,6 @@ public class Note implements Comparable<Note>
         return date;
     }
 
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public Note(long id, String theme, String content, String createDate)
     {
 

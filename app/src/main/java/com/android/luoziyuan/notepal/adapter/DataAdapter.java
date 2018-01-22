@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.android.luoziyuan.notepal.R;
 import com.android.luoziyuan.notepal.model.Exam;
+import com.android.luoziyuan.notepal.model.Homework;
 import com.android.luoziyuan.notepal.model.Note;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class DataAdapter extends BaseAdapter
 
     @Override
     public int getViewTypeCount() {
-        return 2;
+        return 4;
     }
 
     @Override
@@ -62,8 +63,9 @@ public class DataAdapter extends BaseAdapter
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
     {
-        ViewHolder viewHolder = null;
-        ViewHolderEx viewHolderEx = null;
+        ViewHolderNote viewHolderNote = null;
+        ViewHolderExam viewHolderExam = null;
+        ViewHolderHomework viewHolderHomework = null;
         int type = getItemViewType(position);
         Note dataItem = (Note)getItem(position);
         if (convertView == null)
@@ -71,14 +73,22 @@ public class DataAdapter extends BaseAdapter
             switch (type)   //根据不同的type来inflate不同的layout，然后设置不同的tag
             {
                 case Note.TYPE_NOTE:
-                    convertView = View.inflate(context,R.layout.listview,null);
-                    viewHolder = new ViewHolder(convertView);
-                    convertView.setTag(viewHolder);
+                    convertView = View.inflate(context,R.layout.listview_note,null);
+                    viewHolderNote = new ViewHolderNote(convertView);
+                    convertView.setTag(viewHolderNote);
                     break;
                 case Note.TYPE_EXAM:
-                    convertView = View.inflate(context,R.layout.listview_ex,null);
-                    viewHolderEx = new ViewHolderEx(convertView);
-                    convertView.setTag(viewHolderEx);
+                    convertView = View.inflate(context,R.layout.listview_exam,null);
+                    viewHolderExam = new ViewHolderExam(convertView);
+                    convertView.setTag(viewHolderExam);
+                    break;
+                case Note.TYPE_HOMEWORK:
+                    convertView = View.inflate(context,R.layout.listview_homework,null);
+                    viewHolderHomework = new ViewHolderHomework(convertView);
+                    convertView.setTag(viewHolderHomework);
+                    break;
+                case Note.TYPE_AFFAIR:
+                    break;
             }
         }
         else        //根据不同的type来获得tag
@@ -86,10 +96,15 @@ public class DataAdapter extends BaseAdapter
             switch (type)
             {
                 case Note.TYPE_NOTE:
-                    viewHolder = (ViewHolder)convertView.getTag();
+                    viewHolderNote = (ViewHolderNote)convertView.getTag();
                     break;
                 case Note.TYPE_EXAM:
-                    viewHolderEx = (ViewHolderEx)convertView.getTag();
+                    viewHolderExam = (ViewHolderExam)convertView.getTag();
+                    break;
+                case Note.TYPE_HOMEWORK:
+                    viewHolderHomework = (ViewHolderHomework)convertView.getTag();
+                    break;
+                case Note.TYPE_AFFAIR:
                     break;
             }
         }
@@ -97,50 +112,78 @@ public class DataAdapter extends BaseAdapter
         switch (type)       //根据不同的type设置数据
         {
             case Note.TYPE_NOTE:
-                viewHolder.themeText.setText(dataItem.getTheme());
-                viewHolder.contentText.setText(dataItem.getContent());
-                viewHolder.dateText.setText(dataItem.getDate());
+                viewHolderNote.themeText.setText(dataItem.getTheme());
+                viewHolderNote.contentText.setText(dataItem.getContent());
+                viewHolderNote.dateText.setText(dataItem.getDate());
                 break;
             case Note.TYPE_EXAM:
                 Exam exam = (Exam) dataItem;
-                viewHolderEx.themeText.setText(exam.getTheme());
-                viewHolderEx.placeText.setText(exam.getPlace());
-                viewHolderEx.dateText.setText(exam.getDate());
-                viewHolderEx.timeText.setText(exam.getTime());
+                viewHolderExam.subjectText.setText(exam.getSubject());
+                viewHolderExam.placeText.setText(exam.getPlace());
+                viewHolderExam.dateText.setText(exam.getDate());
+                viewHolderExam.timeText.setText(exam.getTime());
+                break;
+            case Note.TYPE_HOMEWORK:
+                Homework homework = (Homework)dataItem;
+                viewHolderHomework.subjectText.setText(homework.getSubject());
+                viewHolderHomework.descriptionText.setText(homework.getDescription());
+                viewHolderHomework.dateText.setText(homework.getCreateDate());
+                viewHolderHomework.deadlineText.setText(homework.getDeadline());
+                break;
+            case Note.TYPE_AFFAIR:
                 break;
         }
         return convertView;
     }
 
-    class ViewHolder	//内部类ViewHolder，用于优化加载性能
+    class ViewHolderNote	//Note类型的内部类ViewHolder，用于优化加载性能
     {
-        @BindView(R.id.themeText_listview)
+        @BindView(R.id.themeText_listviewNote)
         TextView themeText;
-        @BindView(R.id.contentText_listview)
+        @BindView(R.id.contentText_listviewNote)
         TextView contentText;
-        @BindView(R.id.dateText_listview)
+        @BindView(R.id.dateText_listviewNote)
         TextView dateText;
-
-        public ViewHolder(View view)        //使用ButterKnife
+        public ViewHolderNote(View view)        //使用ButterKnife
         {
             ButterKnife.bind(this,view);
         }
     }
 
-    class ViewHolderEx      //Exam和Affair类的ViewHolder
+    class ViewHolderExam      //Exam类的ViewHolder
     {
-        @BindView(R.id.themeText_listviewEx)
-        TextView themeText;
-        @BindView(R.id.placeText_listviewEx)
+        @BindView(R.id.subjectText_listviewExam)
+        TextView subjectText;
+        @BindView(R.id.placeText_listviewExam)
         TextView placeText;
-        @BindView(R.id.timeText_listviewEx)
+        @BindView(R.id.timeText_listviewExam)
         TextView timeText;
-        @BindView(R.id.dateText_listviewEx)
+        @BindView(R.id.dateText_listviewExam)
         TextView dateText;
-
-        public ViewHolderEx(View view)
+        public ViewHolderExam(View view)
         {
             ButterKnife.bind(this,view);
         }
+    }
+
+    class ViewHolderHomework    //Homework类的ViewHolder
+    {
+        @BindView(R.id.subjectText_listviewHomework)
+        TextView subjectText;
+        @BindView(R.id.descriptionText_listviewHomework)
+        TextView descriptionText;
+        @BindView(R.id.dateText_listviewHomework)
+        TextView dateText;
+        @BindView(R.id.deadlineText_listviewHomework)
+        TextView deadlineText;
+        public ViewHolderHomework(View view)
+        {
+            ButterKnife.bind(this,view);
+        }
+    }
+
+    class ViewHolderAffair      //Affair类的ViewHolder
+    {
+
     }
 }

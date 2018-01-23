@@ -7,9 +7,9 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/subjectText_updateExam"
+        android:id="@+id/subjectText_updateHomework"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -22,42 +22,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <TextView
+        android:id="@+id/deadlineText_updateHomework"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:orientation="horizontal"
+        android:paddingBottom="6dp"
+        android:paddingTop="6dp"
+        android:text="点击设置deadline"
+        android:textAlignment="center"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subjectText_updateExam">
-
-        <TextView
-            android:id="@+id/dateText_updateExam"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="点击设置日期"
-            android:textAlignment="center"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/timeText_updateExam"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="点击设置时间"
-            android:textAlignment="center"
-            android:textSize="18sp" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/subjectText_updateHomework" />
 
     <EditText
-        android:id="@+id/descriptionText_updateExam"
+        android:id="@+id/descriptionText_updateHomework"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
@@ -66,30 +48,15 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:gravity="top"
-        android:hint="说明"
+        android:hint="内容"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/placeText_updateExam" />
-
-    <EditText
-        android:id="@+id/placeText_updateExam"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="地点"
-        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/deadlineText_updateHomework" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayout4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -101,7 +68,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/okButton_updateExam"
+            android:id="@+id/okButton_updateHomework"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -109,7 +76,7 @@
             android:textSize="18sp" />
 
         <Button
-            android:id="@+id/cancelButton_updateExam"
+            android:id="@+id/cancelButton_updateHomework"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

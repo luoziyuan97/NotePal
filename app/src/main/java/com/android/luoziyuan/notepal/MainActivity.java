@@ -16,7 +16,9 @@ import android.widget.Toast;
 import com.android.luoziyuan.notepal.adapter.DataAdapter;
 import com.android.luoziyuan.notepal.controller.UpdateActivity;
 import com.android.luoziyuan.notepal.database.DataSource;
+import com.android.luoziyuan.notepal.model.Affair;
 import com.android.luoziyuan.notepal.model.Exam;
+import com.android.luoziyuan.notepal.model.Homework;
 import com.android.luoziyuan.notepal.model.Note;
 import com.android.luoziyuan.notepal.controller.AddActivity;
 
@@ -88,24 +90,37 @@ public class MainActivity extends AppCompatActivity {
         int type = data.get(position).getType();
         Intent intent = new Intent(this, UpdateActivity.class);
         intent.putExtra("type",type);
-        Bundle bundle = new Bundle();
-        bundle.putInt("position",position);
+        intent.putExtra("position",position);
         switch (type)           //根据记录类型传输不同的数据
         {
             case Note.TYPE_NOTE:
-                bundle.putString("theme",data.get(position).getTheme());
-                bundle.putString("content",data.get(position).getContent());
+                intent.putExtra("theme",data.get(position).getTheme());
+                intent.putExtra("content",data.get(position).getContent());
                 break;
             case Note.TYPE_EXAM:
-                Exam temp = (Exam)data.get(position);
-                bundle.putString("subject",temp.getTheme());
-                bundle.putString("date",temp.getDate());
-                bundle.putString("time",temp.getTime());
-                bundle.putString("place",temp.getPlace());
-                bundle.putString("description",temp.getContent());
+                Exam exam = (Exam)data.get(position);
+                intent.putExtra("subject",exam.getTheme());
+                intent.putExtra("date",exam.getDate());
+                intent.putExtra("time",exam.getTime());
+                intent.putExtra("place",exam.getPlace());
+                intent.putExtra("description",exam.getContent());
+                break;
+            case Note.TYPE_HOMEWORK:
+                Homework homework = (Homework)data.get(position);
+                intent.putExtra("subject",homework.getSubject());
+                intent.putExtra("description",homework.getDescription());
+                intent.putExtra("deadline",homework.getDeadline());
+                intent.putExtra("createDate",homework.getCreateDate());
+                break;
+            case Note.TYPE_AFFAIR:
+                Affair affair = (Affair)data.get(position);
+                intent.putExtra("theme",affair.getTheme());
+                intent.putExtra("description",affair.getDescription());
+                intent.putExtra("date",affair.getDate());
+                intent.putExtra("time",affair.getTime());
+                intent.putExtra("place",affair.getPlace());
                 break;
         }
-        intent.putExtras(bundle);
         startActivityForResult(intent,REQUESTCODE_UPDATEACTIVITY);
     }
 
@@ -133,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+//*******************************************************************************************
+//  onCreate
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,6 +164,9 @@ public class MainActivity extends AppCompatActivity {
         dataAdapter = new DataAdapter(this,data);
         listView.setAdapter(dataAdapter);
     }
+
+//*********************************************************************************************
+//  onActivityResult
 
     @Override           //添加和更改后续操作
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -176,10 +197,16 @@ public class MainActivity extends AppCompatActivity {
                             dataSource.insertHomework(data,
                                     intent.getStringExtra("subject"),
                                     intent.getStringExtra("description"),
-                                    intent.getStringExtra("createDate"),
+                                    dateFormat.format(System.currentTimeMillis()),
                                     intent.getStringExtra("deadline"));
                             break;
                         case Note.TYPE_AFFAIR:
+                            dataSource.insertAffair(data,
+                                    intent.getStringExtra("theme"),
+                                    intent.getStringExtra("description"),
+                                    intent.getStringExtra("date"),
+                                    intent.getStringExtra("time"),
+                                    intent.getStringExtra("place"));
                             break;
                     }
                     dataAdapter.notifyDataSetChanged();         //更新listview的显示
@@ -204,6 +231,21 @@ public class MainActivity extends AppCompatActivity {
                             case Note.TYPE_EXAM:
                                 dataSource.insertExam(data,
                                         intent.getStringExtra("subject"),
+                                        intent.getStringExtra("description"),
+                                        intent.getStringExtra("date"),
+                                        intent.getStringExtra("time"),
+                                        intent.getStringExtra("place"));
+                                break;
+                            case Note.TYPE_HOMEWORK:
+                                dataSource.insertHomework(data,
+                                        intent.getStringExtra("subject"),
+                                        intent.getStringExtra("description"),
+                                        dateFormat.format(System.currentTimeMillis()),
+                                        intent.getStringExtra("deadline"));
+                                break;
+                            case Note.TYPE_AFFAIR:
+                                dataSource.insertAffair(data,
+                                        intent.getStringExtra("theme"),
                                         intent.getStringExtra("description"),
                                         intent.getStringExtra("date"),
                                         intent.getStringExtra("time"),

@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.android.luoziyuan.notepal.R;
+import com.android.luoziyuan.notepal.model.Affair;
 import com.android.luoziyuan.notepal.model.Exam;
 import com.android.luoziyuan.notepal.model.Homework;
 import com.android.luoziyuan.notepal.model.Note;
@@ -66,6 +67,7 @@ public class DataAdapter extends BaseAdapter
         ViewHolderNote viewHolderNote = null;
         ViewHolderExam viewHolderExam = null;
         ViewHolderHomework viewHolderHomework = null;
+        ViewHolderAffair viewHolderAffair = null;
         int type = getItemViewType(position);
         Note dataItem = (Note)getItem(position);
         if (convertView == null)
@@ -88,6 +90,9 @@ public class DataAdapter extends BaseAdapter
                     convertView.setTag(viewHolderHomework);
                     break;
                 case Note.TYPE_AFFAIR:
+                    convertView = View.inflate(context,R.layout.listview_affair,null);
+                    viewHolderAffair = new ViewHolderAffair(convertView);
+                    convertView.setTag(viewHolderAffair);
                     break;
             }
         }
@@ -105,6 +110,7 @@ public class DataAdapter extends BaseAdapter
                     viewHolderHomework = (ViewHolderHomework)convertView.getTag();
                     break;
                 case Note.TYPE_AFFAIR:
+                    viewHolderAffair = (ViewHolderAffair)convertView.getTag();
                     break;
             }
         }
@@ -131,6 +137,11 @@ public class DataAdapter extends BaseAdapter
                 viewHolderHomework.deadlineText.setText(homework.getDeadline());
                 break;
             case Note.TYPE_AFFAIR:
+                Affair affair = (Affair)dataItem;
+                viewHolderAffair.themeText.setText(affair.getTheme());
+                viewHolderAffair.placeText.setText(affair.getPlace());
+                viewHolderAffair.dateText.setText(affair.getDate());
+                viewHolderAffair.timeText.setText(affair.getTime());
                 break;
         }
         return convertView;
@@ -184,6 +195,17 @@ public class DataAdapter extends BaseAdapter
 
     class ViewHolderAffair      //Affair类的ViewHolder
     {
-
+        @BindView(R.id.themeText_listviewAffair)
+        TextView themeText;
+        @BindView(R.id.placeText_listviewAffair)
+        TextView placeText;
+        @BindView(R.id.dateText_listviewAffair)
+        TextView dateText;
+        @BindView(R.id.timeText_listviewAffair)
+        TextView timeText;
+        public ViewHolderAffair(View view)
+        {
+            ButterKnife.bind(this,view);
+        }
     }
 }

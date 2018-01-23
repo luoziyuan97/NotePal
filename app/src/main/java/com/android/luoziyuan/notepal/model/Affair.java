@@ -17,6 +17,10 @@ public class Affair extends Note
         return place;
     }
 
+    public String getDescription(){
+        return super.getContent();
+    }
+
     public Affair(long id, String theme, String description, String date, String time, String place)
     {
         super(id,Note.TYPE_AFFAIR,theme,description,date);

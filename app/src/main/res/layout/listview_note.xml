@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="false"
-        android:text="TextView"
+        android:text="theme"
         android:textSize="24sp" />
 
     <TextView
@@ -19,14 +19,14 @@
         android:ellipsize="end"
         android:maxEms="10"
         android:singleLine="true"
-        android:text="TextView"
+        android:text="content"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/dateText_listviewNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="date"
         android:textAlignment="center"
         android:textSize="18sp" />
 </LinearLayout>

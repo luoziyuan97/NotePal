@@ -13,16 +13,18 @@ public class Exam extends Note
         return time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public String getPlace() {
         return place;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public String getSubject()
+    {
+        return super.getTheme();
+    }
+
+    public String getDescription()
+    {
+        return super.getContent();
     }
 
     public Exam(long id, String subject, String description, String date, String time, String place)

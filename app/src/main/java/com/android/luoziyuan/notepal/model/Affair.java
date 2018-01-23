@@ -13,16 +13,12 @@ public class Affair extends Note
         return time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public String getPlace() {
         return place;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public String getDescription(){
+        return super.getContent();
     }
 
     public Affair(long id, String theme, String description, String date, String time, String place)

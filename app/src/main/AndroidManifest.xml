@@ -9,15 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" android:windowSoftInputMode="adjustPan">
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.AddActivity"/>
-        <activity android:name=".controller.UpdateActivity"/>
+        <activity
+            android:name=".controller.AddActivity"
+            android:label="添加新记录">
+        </activity>
+        <activity
+            android:name=".controller.UpdateActivity"
+            android:label="查看更改记录">
+        </activity>
     </application>
 
 </manifest>

@@ -7,7 +7,7 @@ package com.android.luoziyuan.notepal.database;
 public class DBSchema
 {
     public static final String DB_NAME = "mynotes.db";   //数据库名
-    public static final int DB_VERSION = 4;             //数据库版本号
+    public static final int DB_VERSION = 5;             //数据库版本号
 
     public static class NoteTable           //对应数据库中的notes表
     {

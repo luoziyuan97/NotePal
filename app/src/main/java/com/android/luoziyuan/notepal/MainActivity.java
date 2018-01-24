@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -165,7 +168,26 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(dataAdapter);
     }
 
-//*********************************************************************************************
+    //添加功能到ActionBar上
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_mainactivity,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("关于本应用");
+        builder.setMessage("作者:luoziyuan97\n感谢三位老友的支持和帮助:\n" +
+                "不见长安\n人非人\nDoge Young");
+        builder.setPositiveButton("666",null);
+        builder.show();
+        return super.onOptionsItemSelected(item);
+    }
+
+    //*********************************************************************************************
 //  onActivityResult
 
     @Override           //添加和更改后续操作

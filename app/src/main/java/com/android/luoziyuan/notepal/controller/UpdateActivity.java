@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -28,7 +30,7 @@ import butterknife.Optional;
  * Created by John on 2018/1/20.
  */
 
-public class UpdateActivity extends Activity
+public class UpdateActivity extends AppCompatActivity
 {
     private String theme;
     private String content;
@@ -130,25 +132,41 @@ public class UpdateActivity extends Activity
     @OnClick(R.id.dateText_updateExam)
     public void setDate_Exam()                   //点击dateText设置日期
     {
+        date = dateText_Exam.getText().toString();
         int year = Integer.parseInt(date.substring(0,4));
         int month = Integer.parseInt(date.substring(5,7)) - 1;  //传给DatePicker的月份从0开始
         int day = Integer.parseInt(date.substring(8,10));
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String date = year + ".";
-                if (month < 9)
-                    date += "0" + (month + 1);
-                else
-                    date += (month + 1);
-                date += ".";
-                if (dayOfMonth < 10)
-                    date += "0" + dayOfMonth;
-                else
-                    date += dayOfMonth;
-                dateText_Exam.setText(date);
-            }
-        },year,month,day);
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                null,year,month,day);
+        //为了解决安卓4.4版本没有取消的问题，采用手动设置按钮事件
+        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DatePicker datePicker = datePickerDialog.getDatePicker();
+                        int year = datePicker.getYear();
+                        int month = datePicker.getMonth();
+                        int dayOfMonth = datePicker.getDayOfMonth();
+                        String date = year + ".";
+                        if (month < 9)
+                            date += "0" + (month + 1);
+                        else
+                            date += (month + 1);
+                        date += ".";
+                        if (dayOfMonth < 10)
+                            date += "0" + dayOfMonth;
+                        else
+                            date += dayOfMonth;
+                        dateText_Exam.setText(date);
+                    }
+                });
+        datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
         datePickerDialog.show();
     }
 
@@ -174,7 +192,6 @@ public class UpdateActivity extends Activity
                 hour = Integer.parseInt(time.substring(0,1));
                 minute = Integer.parseInt(time.substring(2,4));
             }
-
         }
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -265,25 +282,41 @@ public class UpdateActivity extends Activity
     @OnClick(R.id.deadlineText_updateHomework)
     public void setDeadline_Homework()                   //点击deadlineText设置日期
     {
+        deadline = deadlineText_Homework.getText().toString();
         int year = Integer.parseInt(deadline.substring(0,4));
         int month = Integer.parseInt(deadline.substring(5,7)) - 1;  //传给DatePicker的月份从0开始
         int day = Integer.parseInt(deadline.substring(8,10));
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String date = year + ".";
-                if (month < 9)
-                    date += "0" + (month + 1);
-                else
-                    date += (month + 1);
-                date += ".";
-                if (dayOfMonth < 10)
-                    date += "0" + dayOfMonth;
-                else
-                    date += dayOfMonth;
-                deadlineText_Homework.setText(date);
-            }
-        },year,month,day);
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                null,year,month,day);
+        //为了解决安卓4.4版本没有取消的问题，采用手动设置按钮事件
+        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DatePicker datePicker = datePickerDialog.getDatePicker();
+                        int year = datePicker.getYear();
+                        int month = datePicker.getMonth();
+                        int dayOfMonth = datePicker.getDayOfMonth();
+                        String date = year + ".";
+                        if (month < 9)
+                            date += "0" + (month + 1);
+                        else
+                            date += (month + 1);
+                        date += ".";
+                        if (dayOfMonth < 10)
+                            date += "0" + dayOfMonth;
+                        else
+                            date += dayOfMonth;
+                        deadlineText_Homework.setText(date);
+                    }
+                });
+        datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
         datePickerDialog.show();
     }
 
@@ -366,25 +399,41 @@ public class UpdateActivity extends Activity
     @OnClick(R.id.dateText_updateAffair)
     public void setDate_Affair()                   //点击dateText设置日期
     {
+        date = dateText_Affair.getText().toString();
         int year = Integer.parseInt(date.substring(0,4));
         int month = Integer.parseInt(date.substring(5,7)) - 1;  //传给DatePicker的月份从0开始
         int day = Integer.parseInt(date.substring(8,10));
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String date = year + ".";
-                if (month < 9)
-                    date += "0" + (month + 1);
-                else
-                    date += (month + 1);
-                date += ".";
-                if (dayOfMonth < 10)
-                    date += "0" + dayOfMonth;
-                else
-                    date += dayOfMonth;
-                dateText_Affair.setText(date);
-            }
-        },year,month,day);
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                null,year,month,day);
+        //为了解决安卓4.4版本没有取消的问题，采用手动设置按钮事件
+        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DatePicker datePicker = datePickerDialog.getDatePicker();
+                        int year = datePicker.getYear();
+                        int month = datePicker.getMonth();
+                        int dayOfMonth = datePicker.getDayOfMonth();
+                        String date = year + ".";
+                        if (month < 9)
+                            date += "0" + (month + 1);
+                        else
+                            date += (month + 1);
+                        date += ".";
+                        if (dayOfMonth < 10)
+                            date += "0" + dayOfMonth;
+                        else
+                            date += dayOfMonth;
+                        dateText_Affair.setText(date);
+                    }
+                });
+        datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
         datePickerDialog.show();
     }
 

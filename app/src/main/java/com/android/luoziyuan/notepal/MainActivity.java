@@ -168,7 +168,10 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(dataAdapter);
     }
 
-    //添加功能到ActionBar上
+//****************************************************************************************
+//  与ActionBar Menu相关代码
+
+    //加载Menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -178,12 +181,37 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("关于本应用");
-        builder.setMessage("作者:luoziyuan97\n感谢三位老友的支持和帮助:\n" +
-                "不见长安\n人非人\nDoge Young");
-        builder.setPositiveButton("666",null);
-        builder.show();
+        switch (id)
+        {
+            case R.id.about_menu_mainActivity:
+                builder.setTitle("关于本应用");
+                builder.setMessage("作者:luoziyuan97\n感谢三位老友的支持和帮助:\n" +
+                        "不见长安\n人非人\nDoge Young");
+                builder.setPositiveButton("666",null);
+                builder.show();
+                break;
+            case R.id.clear_menu_mainActivity:
+                builder.setTitle("提示");
+                builder.setMessage("清空所有记录？");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dataSource.deleteAll(data);
+                        dataAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 

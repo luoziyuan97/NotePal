@@ -92,8 +92,9 @@ public class DataSource
         Cursor cursor = sqLiteDB.rawQuery("SELECT * FROM " +
                 DBSchema.NoteTable.TABLE_NAME + " WHERE " +
                 DBSchema.NoteTable.COLUMN_CONTENT + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.NoteTable.COLUMN_THEME + " like " + "'%" + s + "%'",
-                null);
+                DBSchema.NoteTable.COLUMN_THEME + " like " + "'%" + s + "%'" + " OR " +
+                DBSchema.NoteTable.COLUMN_DATE + " like " + "'%" + s + "%'"
+                ,null);
         if (cursor.moveToFirst())
         {
             do{
@@ -107,10 +108,13 @@ public class DataSource
         }
         //获取Exam类型的记录
         cursor = sqLiteDB.rawQuery("SELECT * FROM " +
-                        DBSchema.ExamTable.TABLE_NAME + " WHERE " +
-                        DBSchema.ExamTable.COLUMN_SUBJECT + " like " + "'%" + s + "%'" + " OR " +
-                        DBSchema.ExamTable.COLUMN_DESCRIPTION + " like " + "'%" + s + "%'",
-                null);
+                DBSchema.ExamTable.TABLE_NAME + " WHERE " +
+                DBSchema.ExamTable.COLUMN_SUBJECT + " like " + "'%" + s + "%'" + " OR " +
+                DBSchema.ExamTable.COLUMN_DESCRIPTION + " like " + "'%" + s + "%'" + " OR " +
+                DBSchema.ExamTable.COLUMN_DATE + " like " + "'%" + s + "%'" + " OR " +
+                DBSchema.ExamTable.COLUMN_TIME + " like " + "'%" + s + "%'" + " OR " +
+                DBSchema.ExamTable.COLUMN_PLACE + " like " + "'%" + s + "%'"
+                ,null);
         if (cursor.moveToFirst())
         {
             do{
@@ -126,10 +130,12 @@ public class DataSource
         }
         //获取Homework类型的记录
         cursor = sqLiteDB.rawQuery("SELECT * FROM " +
-                        DBSchema.HomeworkTable.TABLE_NAME + " WHERE " +
-                        DBSchema.HomeworkTable.COLUMN_SUBJECT + " like " + "'%" + s + "%'" + " OR " +
-                        DBSchema.HomeworkTable.COLUMN_DESCRIPTION + " like " + "'%" + s + "%'",
-                null);
+                DBSchema.HomeworkTable.TABLE_NAME + " WHERE " +
+                DBSchema.HomeworkTable.COLUMN_SUBJECT + " like " + "'%" + s + "%'" + " OR " +
+                DBSchema.HomeworkTable.COLUMN_DESCRIPTION + " like " + "'%" + s + "%'" + " OR " +
+                DBSchema.HomeworkTable.COLUMN_CREATEDATE + " like " + "'%" + s + "%'" + " OR " +
+                DBSchema.HomeworkTable.COLUMN_DEADLINE + " like " + "'%" + s + "%'"
+                ,null);
         if (cursor.moveToFirst())
         {
             do{
@@ -144,10 +150,13 @@ public class DataSource
         }
         //获取Affair类型的记录
         cursor = sqLiteDB.rawQuery("SELECT * FROM " +
-                        DBSchema.AffairTable.TABLE_NAME + " WHERE " +
-                        DBSchema.AffairTable.COLUMN_THEME + " like " + "'%" + s + "%'" + " OR " +
-                        DBSchema.AffairTable.COLUMN_DESCRIPTION + " like " + "'%" + s + "%'",
-                null);
+                DBSchema.AffairTable.TABLE_NAME + " WHERE " +
+                DBSchema.AffairTable.COLUMN_THEME + " like " + "'%" + s + "%'" + " OR " +
+                DBSchema.AffairTable.COLUMN_DESCRIPTION + " like " + "'%" + s + "%'" + " OR " +
+                DBSchema.AffairTable.COLUMN_DATE + " like " + "'%" + s + "%'" + " OR " +
+                DBSchema.AffairTable.COLUMN_TIME + " like " + "'%" + s + "%'" + " OR " +
+                DBSchema.AffairTable.COLUMN_PLACE + " like " + "'%" + s + "%'"
+                ,null);
         if (cursor.moveToFirst())
         {
             do{
@@ -329,5 +338,15 @@ public class DataSource
                 data.remove(position);
                 break;
         }
+    }
+
+    //删除所有记录
+    public void deleteAll(List<Note> data)
+    {
+        sqLiteDB.execSQL("DELETE FROM " + DBSchema.NoteTable.TABLE_NAME);
+        sqLiteDB.execSQL("DELETE FROM " + DBSchema.ExamTable.TABLE_NAME);
+        sqLiteDB.execSQL("DELETE FROM " + DBSchema.HomeworkTable.TABLE_NAME);
+        sqLiteDB.execSQL("DELETE FROM " + DBSchema.AffairTable.TABLE_NAME);
+        data.clear();
     }
 }

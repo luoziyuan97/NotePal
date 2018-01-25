@@ -235,13 +235,13 @@ public class UpdateActivity extends AppCompatActivity
         }
         Intent intent = new Intent();
         //检测是否更改
+        if (newTime.equals("点击设置时间"))
+            newTime = "";
         if (newSubject.equals(subject) && newDescription.equals(description) &&
                 newDate.equals(date) && newTime.equals(time) && newPlace.equals(place))
             intent.putExtra("isChanged",false);
         else
         {                                                       //回传更改后的数据
-            if (newTime.equals("点击设置时间"))
-                newTime = "";
             intent.putExtra("isChanged",true);
             intent.putExtra("type",type);
             intent.putExtra("subject",newSubject);
@@ -282,10 +282,23 @@ public class UpdateActivity extends AppCompatActivity
     @OnClick(R.id.deadlineText_updateHomework)
     public void setDeadline_Homework()                   //点击deadlineText设置日期
     {
+        int year;
+        int month;
+        int day;
         deadline = deadlineText_Homework.getText().toString();
-        int year = Integer.parseInt(deadline.substring(0,4));
-        int month = Integer.parseInt(deadline.substring(5,7)) - 1;  //传给DatePicker的月份从0开始
-        int day = Integer.parseInt(deadline.substring(8,10));
+        if (deadline.equals("点击设置deadline"))    //如果还没设置日期
+        {
+            Calendar calendar = Calendar.getInstance();
+            year = calendar.get(Calendar.YEAR);
+            month = calendar.get(Calendar.MONTH);   //月从1开始
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+        }
+        else
+        {
+            year = Integer.parseInt(deadline.substring(0,4));
+            month = Integer.parseInt(deadline.substring(5,7)) - 1;  //传给DatePicker的月份从0开始
+            day = Integer.parseInt(deadline.substring(8,10));
+        }
         final DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 null,year,month,day);
         //为了解决安卓4.4版本没有取消的问题，采用手动设置按钮事件
@@ -346,13 +359,13 @@ public class UpdateActivity extends AppCompatActivity
         }
         Intent intent = new Intent();
         //检测是否更改
+        if (newDeadline.equals("点击设置deadline"))
+            newDeadline = "";
         if (newSubject.equals(subject) && newDescription.equals(description) &&
                 newDeadline.equals(deadline))
             intent.putExtra("isChanged",false);
         else
         {                                                       //回传更改后的数据
-            if (newDeadline.equals("点击设置deadline"))
-                newDeadline = "";
             intent.putExtra("isChanged",true);
             intent.putExtra("type",type);
             intent.putExtra("subject",newSubject);
@@ -503,13 +516,13 @@ public class UpdateActivity extends AppCompatActivity
         }
         Intent intent = new Intent();
         //检测是否更改
+        if (newTime.equals("点击设置时间"))
+            newTime = "";
         if (newTheme.equals(theme) && newDescription.equals(description) &&
                 newDate.equals(date) && newTime.equals(time) && newPlace.equals(place))
             intent.putExtra("isChanged",false);
         else
         {                                                       //回传更改后的数据
-            if (newTime.equals("点击设置时间"))
-                newTime = "";
             intent.putExtra("isChanged",true);
             intent.putExtra("type",type);
             intent.putExtra("theme",newTheme);

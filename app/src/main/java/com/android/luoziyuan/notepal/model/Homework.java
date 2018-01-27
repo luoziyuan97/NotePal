@@ -27,6 +27,11 @@ public class Homework extends Note
         return super.getDate();
     }
 
+    public String getDate()
+    {
+        return deadline;
+    }
+
     public Homework(long id, String subject, String description, String date, String deadline)
     {
         super(id,Note.TYPE_HOMEWORK,subject,description,date);

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
     private DataSource dataSource = null;
     private DataAdapter dataAdapter = null;
+    private boolean selected[] = null;       //记录当前各个类型是否选中
+    private String searchMessage = "";     //记录当前搜索框内的内容
 
     @BindView(R.id.searchText_mainActivity)
     EditText searchText;
@@ -52,14 +55,20 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.listview)
     ListView listView;
 
-    @BindView(R.id.testButton_mainActivity)
-    Button testButton;
+    @BindView(R.id.addButton_mainActivity)
+    Button addButton;
 
-    @OnClick(R.id.testButton_mainActivity)
+    @BindView(R.id.selectButton_mainActivity)
+    Button selectButton;
+
+    @BindView(R.id.clearImage_mainActivity)
+    ImageView clearImage;
+
+    @OnClick(R.id.addButton_mainActivity)
     public void addNewNote(View view)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("请选择记录类型");
+        builder.setTitle("请选择要添加的记录类型");
         builder.setSingleChoiceItems(new String[]{"笔记", "考试", "作业", "事务(会议、活动等)"},
                 -1, new DialogInterface.OnClickListener() {
                     @Override
@@ -75,16 +84,139 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    @OnClick(R.id.selectButton_mainActivity)
+    public void selectType(View view)
+    {
+        final boolean[] selectAll = {false};      //记录是否全选
+        final boolean newSelected[] = new boolean[Note.getTypeCount()];   //创建一个新数组记录本次选择情况
+        for (int i = 0; i < selected.length; i++)
+            newSelected[i] = false;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("请选择要显示的记录类型");
+        builder.setMultiChoiceItems(new String[]{"全部", "笔记", "考试", "作业", "事务"},
+                null, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        switch(which - 1)       //Note的类型字段从0开始
+                        {
+                            case -1:            //全选
+                                if (isChecked)
+                                    selectAll[0] = true;
+                                else
+                                    selectAll[0] = false;
+                                break;
+                            case Note.TYPE_NOTE:
+                                if (isChecked)
+                                    newSelected[Note.TYPE_NOTE] = true;
+                                else
+                                    newSelected[Note.TYPE_NOTE] = false;
+                                break;
+                            case Note.TYPE_EXAM:
+                                if (isChecked)
+                                    newSelected[Note.TYPE_EXAM] = true;
+                                else
+                                    newSelected[Note.TYPE_EXAM] = false;
+                                break;
+                            case Note.TYPE_HOMEWORK:
+                                if (isChecked)
+                                    newSelected[Note.TYPE_HOMEWORK] = true;
+                                else
+                                    newSelected[Note.TYPE_HOMEWORK] = false;
+                                break;
+                            case Note.TYPE_AFFAIR:
+                                if (isChecked)
+                                    newSelected[Note.TYPE_AFFAIR] = true;
+                                else
+                                    newSelected[Note.TYPE_AFFAIR] = false;
+                                break;
+                        }
+                    }
+                });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                data.clear();
+                if (selectAll[0])
+                {
+                    for (int i = 0; i < selected.length; i++)
+                        selected[i] = true;
+                    if (searchMessage.length() == 0)
+                        dataSource.getAll(data);
+                    else
+                        dataSource.getAll(data,searchMessage);
+                }
+                else
+                {
+                    selected = newSelected;
+                    if (searchMessage.length() == 0)
+                    {
+                        if (selected[Note.TYPE_NOTE])
+                            dataSource.getNotes(data);
+                        if (selected[Note.TYPE_EXAM])
+                            dataSource.getExams(data);
+                        if (selected[Note.TYPE_HOMEWORK])
+                            dataSource.getHomework(data);
+                        if (selected[Note.TYPE_AFFAIR])
+                            dataSource.getAffair(data);
+                    }
+                    else
+                    {
+                        if (selected[Note.TYPE_NOTE])
+                            dataSource.getNotes(data,searchMessage);
+                        if (selected[Note.TYPE_EXAM])
+                            dataSource.getExams(data,searchMessage);
+                        if (selected[Note.TYPE_HOMEWORK])
+                            dataSource.getHomework(data,searchMessage);
+                        if (selected[Note.TYPE_AFFAIR])
+                            dataSource.getAffair(data,searchMessage);
+                    }
+                }
+                Collections.sort(data);
+                dataAdapter.notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton("取消",null);
+        builder.show();
+    }
+
     @OnTextChanged(R.id.searchText_mainActivity)
     public void OnTextChanged(Editable s)       //搜索功能，检测到搜索框内容变化后刷新数据
     {
+        searchMessage = s.toString();
         data.clear();
-        if (s.length() == 0)
-            dataSource.get(data);
+        if (searchMessage.length() == 0)
+        {
+            clearImage.setVisibility(View.GONE);
+            if (selected[Note.TYPE_NOTE])
+                dataSource.getNotes(data);
+            if (selected[Note.TYPE_EXAM])
+                dataSource.getExams(data);
+            if (selected[Note.TYPE_HOMEWORK])
+                dataSource.getHomework(data);
+            if (selected[Note.TYPE_AFFAIR])
+                dataSource.getAffair(data);
+        }
         else
-            dataSource.get(data, s.toString());
+        {
+            if (clearImage.getVisibility() == View.GONE)
+                clearImage.setVisibility(View.VISIBLE);
+            if (selected[Note.TYPE_NOTE])
+                dataSource.getNotes(data,searchMessage);
+            if (selected[Note.TYPE_EXAM])
+                dataSource.getExams(data,searchMessage);
+            if (selected[Note.TYPE_HOMEWORK])
+                dataSource.getHomework(data,searchMessage);
+            if (selected[Note.TYPE_AFFAIR])
+                dataSource.getAffair(data,searchMessage);
+        }
         Collections.sort(data);
         dataAdapter.notifyDataSetChanged();
+    }
+
+    @OnClick(R.id.clearImage_mainActivity)
+    public void clearSearchText(View view)          //点击清空搜索框输入
+    {
+        searchText.setText("");
     }
 
     @OnItemClick(R.id.listview)         //listview项的点击事件——查看详情
@@ -160,9 +292,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        selected = new boolean[Note.getTypeCount()];
+        for (int i = 0; i < selected.length; i++)       //初始全部选中
+            selected[i] = true;
         data = new ArrayList<Note>();
         dataSource = new DataSource(this);
-        dataSource.get(data);
+        dataSource.getAll(data);
         Collections.sort(data);
         dataAdapter = new DataAdapter(this,data);
         listView.setAdapter(dataAdapter);
@@ -187,8 +322,8 @@ public class MainActivity extends AppCompatActivity {
         {
             case R.id.about_menu_mainActivity:
                 builder.setTitle("关于本应用");
-                builder.setMessage("作者:luoziyuan97\n感谢三位老友的支持和帮助:\n" +
-                        "不见长安\n人非人\nDoge Young");
+                builder.setMessage("作者:luoziyuan97\n感谢几位朋友的支持和帮助:\n" +
+                        "不见长安\n人非人\nDoge Young\nRed·Joker\nlsw");
                 builder.setPositiveButton("666",null);
                 builder.show();
                 break;

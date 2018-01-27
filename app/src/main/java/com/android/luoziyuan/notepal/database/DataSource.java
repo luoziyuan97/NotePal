@@ -25,7 +25,15 @@ public class DataSource
         sqLiteDB = dbHelper.getWritableDatabase();
     }
 
-    public void get(List<Note> data)     //从数据库获取数据
+    public void getAll(List<Note> data)     //从数据库获取数据
+    {
+        getNotes(data);
+        getExams(data);
+        getHomework(data);
+        getAffair(data);
+    }
+
+    public void getNotes(List<Note> data)
     {
         //获取Note类型的记录
         Cursor cursor = sqLiteDB.rawQuery("SELECT * FROM " + DBSchema.NoteTable.TABLE_NAME,
@@ -40,8 +48,12 @@ public class DataSource
                 data.add(newNote);
             } while (cursor.moveToNext());
         }
+    }
+
+    public void getExams(List<Note> data)
+    {
         //获取Exam类型的记录
-        cursor = sqLiteDB.rawQuery("SELECT * FROM " + DBSchema.ExamTable.TABLE_NAME,
+        Cursor cursor = sqLiteDB.rawQuery("SELECT * FROM " + DBSchema.ExamTable.TABLE_NAME,
                 null);
         if (cursor.moveToFirst()) {
             do {
@@ -55,8 +67,12 @@ public class DataSource
                 data.add(newNote);
             } while (cursor.moveToNext());
         }
+    }
+
+    public void getHomework(List<Note> data)
+    {
         //获取Homework类型的记录
-        cursor = sqLiteDB.rawQuery("SELECT * FROM " + DBSchema.HomeworkTable.TABLE_NAME,
+        Cursor cursor = sqLiteDB.rawQuery("SELECT * FROM " + DBSchema.HomeworkTable.TABLE_NAME,
                 null);
         if (cursor.moveToFirst()) {
             do {
@@ -69,8 +85,12 @@ public class DataSource
                 data.add(newNote);
             } while (cursor.moveToNext());
         }
+    }
+
+    public void getAffair(List<Note> data)
+    {
         //获取Affair类型的记录
-        cursor = sqLiteDB.rawQuery("SELECT * FROM " + DBSchema.AffairTable.TABLE_NAME,
+        Cursor cursor = sqLiteDB.rawQuery("SELECT * FROM " + DBSchema.AffairTable.TABLE_NAME,
                 null);
         if (cursor.moveToFirst()) {
             do {
@@ -86,14 +106,22 @@ public class DataSource
         }
     }
 
-    public void get(List<Note> data,String s)     //带参数的获取数据方法，搜索功能使用
+    public void getAll(List<Note> data,String s)     //带参数的获取数据方法，搜索功能使用
+    {
+        getNotes(data,s);
+        getExams(data,s);
+        getHomework(data,s);
+        getAffair(data,s);
+    }
+
+    public void getNotes(List<Note> data,String s)
     {
         //获取Note类型的记录
         Cursor cursor = sqLiteDB.rawQuery("SELECT * FROM " +
-                DBSchema.NoteTable.TABLE_NAME + " WHERE " +
-                DBSchema.NoteTable.COLUMN_CONTENT + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.NoteTable.COLUMN_THEME + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.NoteTable.COLUMN_DATE + " like " + "'%" + s + "%'"
+                        DBSchema.NoteTable.TABLE_NAME + " WHERE " +
+                        DBSchema.NoteTable.COLUMN_CONTENT + " like " + "'%" + s + "%'" + " OR " +
+                        DBSchema.NoteTable.COLUMN_THEME + " like " + "'%" + s + "%'" + " OR " +
+                        DBSchema.NoteTable.COLUMN_DATE + " like " + "'%" + s + "%'"
                 ,null);
         if (cursor.moveToFirst())
         {
@@ -106,14 +134,18 @@ public class DataSource
                 data.add(newNote);
             }while(cursor.moveToNext());
         }
+    }
+
+    public void getExams(List<Note> data,String s)
+    {
         //获取Exam类型的记录
-        cursor = sqLiteDB.rawQuery("SELECT * FROM " +
-                DBSchema.ExamTable.TABLE_NAME + " WHERE " +
-                DBSchema.ExamTable.COLUMN_SUBJECT + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.ExamTable.COLUMN_DESCRIPTION + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.ExamTable.COLUMN_DATE + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.ExamTable.COLUMN_TIME + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.ExamTable.COLUMN_PLACE + " like " + "'%" + s + "%'"
+        Cursor cursor = sqLiteDB.rawQuery("SELECT * FROM " +
+                        DBSchema.ExamTable.TABLE_NAME + " WHERE " +
+                        DBSchema.ExamTable.COLUMN_SUBJECT + " like " + "'%" + s + "%'" + " OR " +
+                        DBSchema.ExamTable.COLUMN_DESCRIPTION + " like " + "'%" + s + "%'" + " OR " +
+                        DBSchema.ExamTable.COLUMN_DATE + " like " + "'%" + s + "%'" + " OR " +
+                        DBSchema.ExamTable.COLUMN_TIME + " like " + "'%" + s + "%'" + " OR " +
+                        DBSchema.ExamTable.COLUMN_PLACE + " like " + "'%" + s + "%'"
                 ,null);
         if (cursor.moveToFirst())
         {
@@ -128,13 +160,17 @@ public class DataSource
                 data.add(newNote);
             }while(cursor.moveToNext());
         }
+    }
+
+    public void getHomework(List<Note> data,String s)
+    {
         //获取Homework类型的记录
-        cursor = sqLiteDB.rawQuery("SELECT * FROM " +
-                DBSchema.HomeworkTable.TABLE_NAME + " WHERE " +
-                DBSchema.HomeworkTable.COLUMN_SUBJECT + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.HomeworkTable.COLUMN_DESCRIPTION + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.HomeworkTable.COLUMN_CREATEDATE + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.HomeworkTable.COLUMN_DEADLINE + " like " + "'%" + s + "%'"
+        Cursor cursor = sqLiteDB.rawQuery("SELECT * FROM " +
+                        DBSchema.HomeworkTable.TABLE_NAME + " WHERE " +
+                        DBSchema.HomeworkTable.COLUMN_SUBJECT + " like " + "'%" + s + "%'" + " OR " +
+                        DBSchema.HomeworkTable.COLUMN_DESCRIPTION + " like " + "'%" + s + "%'" + " OR " +
+                        DBSchema.HomeworkTable.COLUMN_CREATEDATE + " like " + "'%" + s + "%'" + " OR " +
+                        DBSchema.HomeworkTable.COLUMN_DEADLINE + " like " + "'%" + s + "%'"
                 ,null);
         if (cursor.moveToFirst())
         {
@@ -148,14 +184,18 @@ public class DataSource
                 data.add(newNote);
             }while(cursor.moveToNext());
         }
+    }
+
+    public void getAffair(List<Note> data,String s)
+    {
         //获取Affair类型的记录
-        cursor = sqLiteDB.rawQuery("SELECT * FROM " +
-                DBSchema.AffairTable.TABLE_NAME + " WHERE " +
-                DBSchema.AffairTable.COLUMN_THEME + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.AffairTable.COLUMN_DESCRIPTION + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.AffairTable.COLUMN_DATE + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.AffairTable.COLUMN_TIME + " like " + "'%" + s + "%'" + " OR " +
-                DBSchema.AffairTable.COLUMN_PLACE + " like " + "'%" + s + "%'"
+        Cursor cursor = sqLiteDB.rawQuery("SELECT * FROM " +
+                        DBSchema.AffairTable.TABLE_NAME + " WHERE " +
+                        DBSchema.AffairTable.COLUMN_THEME + " like " + "'%" + s + "%'" + " OR " +
+                        DBSchema.AffairTable.COLUMN_DESCRIPTION + " like " + "'%" + s + "%'" + " OR " +
+                        DBSchema.AffairTable.COLUMN_DATE + " like " + "'%" + s + "%'" + " OR " +
+                        DBSchema.AffairTable.COLUMN_TIME + " like " + "'%" + s + "%'" + " OR " +
+                        DBSchema.AffairTable.COLUMN_PLACE + " like " + "'%" + s + "%'"
                 ,null);
         if (cursor.moveToFirst())
         {
@@ -265,7 +305,7 @@ public class DataSource
         {
             for (int i = 0, len = data.size(); i < len; i++)    //将新记录插入到数据集中的合适位置
             {
-                if (createDate.compareTo(data.get(i).getDate()) < 0)
+                if (deadline.compareTo(data.get(i).getDate()) < 0)
                     continue;
                 data.add(i,new Homework(id,subject,description,createDate,deadline));
                 return;
